@@ -36,7 +36,7 @@ class CaesarEncrypt:
     def __init__(self, word, shift, state='encode', alphabet='ru'):
         self.state = state
         self.alphabet = alphabet_settings.alphabet  # temporarily hard decision
-        self.user_word = word
+        self.user_word = word.lower()
         self.shift = shift
 
     def run(self):
@@ -46,24 +46,26 @@ class CaesarEncrypt:
             self.decoder()
 
     def encoder(self):
-        for element in range(self.shift):
-            shift_alphabet = self.alphabet[0][element + 1:] + self.alphabet[0][:element + 1]
-            if element > 31:
-                if element == 32:  # Не нравится мне этот метод решения проблемы shift > числа элементов списка :(
-                    self.alphabet.append(shift_alphabet)  # ух как не нравится!
-                else:
-                    shift_alphabet = self.alphabet[0][(element % 32):] + self.alphabet[0][:(element % 32)]  # фууу
-                    self.alphabet.append(shift_alphabet)
-                    continue
-            self.alphabet.append(shift_alphabet)
+        # if self.shift > 31:
+        #
+        # for element in range(self.shift):
+        #     shift_alphabet = self.alphabet[0][element + 1:] + self.alphabet[0][:element + 1]
+        #     if element > 31:
+        #         if element == 32:  # Не нравится мне этот метод решения проблемы shift > числа элементов списка :(
+        #             self.alphabet.append(shift_alphabet)  # ух как не нравится!
+        #         else:
+        #             shift_alphabet = self.alphabet[0][(element % 32):] + self.alphabet[0][:(element % 32)]  # фууу
+        #             self.alphabet.append(shift_alphabet)
+        #             continue
+        #     self.alphabet.append(shift_alphabet)
 
         index = 0
         secret_word = ''
         for letter in self.user_word:
-            for char in self.alphabet[0]:
+            for num, char in enumerate(self.alphabet[0]):
                 index += 1
                 if char == letter:
-                    new_message = self.alphabet[self.shift][index - 1]
+                    new_message = self.alphabet[0][(num + self.shift) % 32]
                     secret_word += new_message
                     index = 0
                     break
@@ -109,7 +111,7 @@ class CaesarEncrypt:
 if __name__ == "__main__":
     young_encryptor = CaesarEncrypt(word=input('Введите слово: '),
                                     shift=int(input('Введите сдвиг: ')),
-                                    state='decode')
+                                    state='encode')
     young_encryptor.run()
 
 
