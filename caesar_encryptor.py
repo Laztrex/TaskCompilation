@@ -59,15 +59,15 @@ class CaesarEncrypt:
         #             continue
         #     self.alphabet.append(shift_alphabet)
 
-        index = 0
+        #        index = 0
         secret_word = ''
         for letter in self.user_word:
             for num, char in enumerate(self.alphabet[0]):
-                index += 1
+                #               index += 1
                 if char == letter:
                     new_message = self.alphabet[0][(num + self.shift) % 32]
                     secret_word += new_message
-                    index = 0
+                    #                  index = 0
                     break
                 else:
                     continue
@@ -113,7 +113,6 @@ if __name__ == "__main__":
                                     shift=int(input('Введите сдвиг: ')),
                                     state='encode')
     young_encryptor.run()
-
 
 # TODO ввести проверку принадлежности символа алфавиту
 # TODO включить возможность ввода целого предложения с пробелами и знаками препинания (которые тоже будут шифроваться)
