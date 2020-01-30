@@ -5,6 +5,7 @@
 
 import alphabet_settings
 
+
 # Необходимо написать программу, шифрующее слово с помощью Шифра Цезаря(https://is.gd/rcGAsp).
 # Программа должна принимать на вход от пользователя слово и число сдвигов.
 #
@@ -33,13 +34,20 @@ import alphabet_settings
 
 class CaesarEncrypt:
 
-    def __init__(self, word, shift, state='encode', alphabet='ru'):
-        self.state = state
+    def __init__(self, word, shift, mode='encode', alphabet='ru'):
+        self.state = mode
         self.alphabet = alphabet  # temporarily hard decision
         self.user_word = word.replace(' ', '')
         self.shift = shift
 
-    def check_alphabet(self):
+    def check_alphabet(self, check_letter=None):
+        if check_letter:
+            if check_letter not in self.alphabet:
+                self.alphabet = alphabet_settings.ru[0] if check_letter in alphabet_settings.ru[0] \
+                    else alphabet_settings.eng[0]
+                return False
+        # else Exc
+
         if self.alphabet == 'ru':
             self.alphabet = alphabet_settings.ru
         else:
@@ -49,8 +57,13 @@ class CaesarEncrypt:
         self.check_alphabet()
         if self.state == 'encode':
             self.encoder()
-        else:
+        elif self.state == 'decode':
             self.decoder()
+        else:
+            if '-' in self.shift:
+                self.decoder()
+            else:
+                self.encoder()
 
     def encoder(self):
         # if self.shift > 31:
@@ -67,16 +80,33 @@ class CaesarEncrypt:
         #     self.alphabet.append(shift_alphabet)
 
         secret_word = ''
+
         for letter in self.user_word.lower():
-            for num, char in enumerate(self.alphabet[0]):
-                if char == letter:
-                    new_message = self.alphabet[0][abs((num + self.shift)) % len(self.alphabet[0])]
-                    secret_word += new_message
-                    break
-                else:
-                    continue
+            secret_word += self._secret_permutation(letter)
 
         print(secret_word)
+
+        # for num, char in enumerate(self.alphabet[0]):
+        #     if char == letter:
+        #         new_message = self.alphabet[0][abs((num + self.shift)) % len(self.alphabet[0])]
+        #         secret_word += new_message
+        #         break
+        #     else:
+        #         continue
+
+    def _secret_permutation(self, letter):
+
+        for num, char in enumerate(self.alphabet[0]):
+
+            if char == letter:
+                return self.alphabet[0][abs((num + self.shift)) % len(self.alphabet[0])]
+            else:
+                continue
+
+        # else:
+        #     if not self.check_alphabet(letter):
+        #         result = self._secret_permutation(letter=letter)
+        #         return result
 
     def decoder(self):
         # DECODER.
@@ -95,27 +125,27 @@ class CaesarEncrypt:
         #     shift_alphabet = self.alphabet[0][element + 1:] + self.alphabet[0][:element + 1]
         #     self.alphabet.append(shift_alphabet)
 
-        # index = 0
-        secret_word = ''
-        for letter in self.user_word.lower():
-            for num, char in enumerate(self.alphabet[0]):
-                # index += 1
-                new_letter = char == letter
-                if new_letter:
-                    new_message = self.alphabet[0][abs((num - self.shift)) % len(self.alphabet[0])]
-                    secret_word += new_message
-                    # index = 0
-                    break
-                else:
-                    continue
-
-        print('Зашифрованным словом было -', secret_word)
+        # secret_word = ''
+        # for letter in self.user_word.lower():
+        #     for num, char in enumerate(self.alphabet[0]):
+        #
+        #         if char == letter:
+        #             new_message = self.alphabet[0][abs((num - self.shift)) % len(self.alphabet[0])]
+        #             secret_word += new_message
+        #             break
+        #         else:
+        #             continue
+        #     else:
+        #         if self.check_alphabet(check_letter=letter):
+        #
+        #
+        # print('Зашифрованным словом было -', secret_word)
 
 
 if __name__ == "__main__":
     young_encryptor = CaesarEncrypt(word=input('Введите слово: '),
                                     shift=int(input('Введите сдвиг: ')),
-                                    state='decode',
+                                    mode='encode',
                                     alphabet='ru')
     young_encryptor.run()
 
