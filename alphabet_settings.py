@@ -1,3 +1,8 @@
-alphabet = [
+
+ru = [
     'абвгдеёжзийклмнопрстуфхцчшщъыьэюя',
 ]
+
+eng = [
+    'abcdefghijklmnopqrstuvwxyz',
+       ]

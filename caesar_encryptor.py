@@ -35,9 +35,15 @@ class CaesarEncrypt:
 
     def __init__(self, word, shift, state='encode', alphabet='ru'):
         self.state = state
-        self.alphabet = alphabet_settings.alphabet  # temporarily hard decision
-        self.user_word = word.lower()
+        self.alphabet = alphabet  # temporarily hard decision
+        self.user_word = word.replace(' ', '')
         self.shift = shift
+
+    def check_alphabet(self):
+        if self.alphabet == 'ru':
+            self.alphabet = alphabet_settings.ru
+        else:
+            self.alphabet = alphabet_settings.eng
 
     def run(self):
         if self.state == 'encode':
@@ -58,16 +64,14 @@ class CaesarEncrypt:
         #             self.alphabet.append(shift_alphabet)
         #             continue
         #     self.alphabet.append(shift_alphabet)
+        self.check_alphabet()
 
-        #        index = 0
         secret_word = ''
-        for letter in self.user_word:
+        for letter in self.user_word.lower():
             for num, char in enumerate(self.alphabet[0]):
-                #               index += 1
                 if char == letter:
-                    new_message = self.alphabet[0][(num + self.shift) % 32]
+                    new_message = self.alphabet[0][abs((num + self.shift)) % len(self.alphabet[0])]
                     secret_word += new_message
-                    #                  index = 0
                     break
                 else:
                     continue
@@ -111,7 +115,8 @@ class CaesarEncrypt:
 if __name__ == "__main__":
     young_encryptor = CaesarEncrypt(word=input('Введите слово: '),
                                     shift=int(input('Введите сдвиг: ')),
-                                    state='encode')
+                                    state='encode',
+                                    alphabet='ru')
     young_encryptor.run()
 
 # TODO ввести проверку принадлежности символа алфавиту
