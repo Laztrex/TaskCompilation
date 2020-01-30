@@ -46,6 +46,7 @@ class CaesarEncrypt:
             self.alphabet = alphabet_settings.eng
 
     def run(self):
+        self.check_alphabet()
         if self.state == 'encode':
             self.encoder()
         else:
@@ -64,7 +65,6 @@ class CaesarEncrypt:
         #             self.alphabet.append(shift_alphabet)
         #             continue
         #     self.alphabet.append(shift_alphabet)
-        self.check_alphabet()
 
         secret_word = ''
         for letter in self.user_word.lower():
@@ -91,20 +91,20 @@ class CaesarEncrypt:
         # Вывод: Зашифрованным словом было - привет
         """
 
-        for element in range(self.shift):
-            shift_alphabet = self.alphabet[0][element + 1:] + self.alphabet[0][:element + 1]
-            self.alphabet.append(shift_alphabet)
+        # for element in range(self.shift):
+        #     shift_alphabet = self.alphabet[0][element + 1:] + self.alphabet[0][:element + 1]
+        #     self.alphabet.append(shift_alphabet)
 
-        index = 0
+        # index = 0
         secret_word = ''
-        for letter in self.user_word:
-            for char in self.alphabet[self.shift]:
-                index += 1
+        for letter in self.user_word.lower():
+            for num, char in enumerate(self.alphabet[0]):
+                # index += 1
                 new_letter = char == letter
                 if new_letter:
-                    new_message = self.alphabet[0][index - 1]
+                    new_message = self.alphabet[0][abs((num - self.shift)) % len(self.alphabet[0])]
                     secret_word += new_message
-                    index = 0
+                    # index = 0
                     break
                 else:
                     continue
@@ -115,7 +115,7 @@ class CaesarEncrypt:
 if __name__ == "__main__":
     young_encryptor = CaesarEncrypt(word=input('Введите слово: '),
                                     shift=int(input('Введите сдвиг: ')),
-                                    state='encode',
+                                    state='decode',
                                     alphabet='ru')
     young_encryptor.run()
 
