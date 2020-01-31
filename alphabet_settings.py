@@ -1,8 +1,4 @@
 
-ru = [
-    'абвгдеёжзийклмнопрстуфхцчшщъыьэюя',
-]
+ru = 'абвгдеёжзийклмнопрстуфхцчшщъыьэюя'
 
-eng = [
-    'abcdefghijklmnopqrstuvwxyz',
-       ]
+eng = 'abcdefghijklmnopqrstuvwxyz'

@@ -46,21 +46,6 @@ class CaesarEncrypt:
             self.shift = 0 - self.shift
         self.encoder()
 
-    def _check_alphabet(self, check_letter=None):
-        if check_letter:
-            if check_letter.isalpha():
-                if check_letter not in self.alphabet:
-                    self.alphabet = alphabet_settings.ru[0] if check_letter in alphabet_settings.ru[0] \
-                        else alphabet_settings.eng[0]
-                    return False
-            else:
-                return True
-
-        if self.alphabet == 'ru':
-            self.alphabet = alphabet_settings.ru[0]
-        else:
-            self.alphabet = alphabet_settings.eng[0]
-
     def encoder(self):
         secret_word = ''
 
@@ -69,28 +54,31 @@ class CaesarEncrypt:
 
         print(secret_word)
 
+    def _check_alphabet(self, check_letter=None):
+        if check_letter:
+            if check_letter.isalpha():
+                if check_letter not in self.alphabet:
+                    self.alphabet = alphabet_settings.ru if check_letter in alphabet_settings.ru \
+                        else alphabet_settings.eng
+                    return False
+            else:
+                return True
+
+        if self.alphabet == 'ru':
+            self.alphabet = alphabet_settings.ru
+        else:
+            self.alphabet = alphabet_settings.eng
+
     def _secret_permutation(self, letter):
         for num, char in enumerate(self.alphabet):
             if char == letter:
-                return self.alphabet[abs((num + self.shift)) % len(self.alphabet)]
+                return self.alphabet[(num + self.shift) % len(self.alphabet)]
             else:
                 continue
         else:
             if not self._check_alphabet(letter):
                 return self._secret_permutation(letter=letter)
             return ''
-
-        # DECODER.
-        # Необходимо написать программу, которая расшифровывает заданное зашифрованное слово силами Шифра Цезаря
-        # Подробнее о шифре Цезаря - (https://is.gd/rcGAsp).
-        # Дано зашифрованное сообщение, число сдвигов и русский алфавит
-
-        # """
-        #  Пример:
-        # # message_encrypt = 'фхнжйч'
-        # # shift_encrypt = 5
-        # # Вывод: Зашифрованным словом было - привет
-        # """
 
 
 if __name__ == "__main__":
@@ -99,4 +87,16 @@ if __name__ == "__main__":
                                     alphabet='ru')
     young_encryptor.run()
 
-# TODO сделать через консоль запуск
+
+# Пояснения
+# DECODER.
+# Необходимо написать программу, которая расшифровывает заданное зашифрованное слово силами Шифра Цезаря
+# Подробнее о шифре Цезаря - (https://is.gd/rcGAsp).
+# Дано зашифрованное сообщение, число сдвигов и русский алфавит
+
+# """
+#  Пример:
+# # message_encrypt = 'фхнжйч'
+# # shift_encrypt = 5
+# # Вывод: Зашифрованным словом было - привет
+# """
