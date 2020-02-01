@@ -38,15 +38,24 @@ class VijenerEnc:
         self.alphabet = alphabet
 
     def _find_index(self, my_str, symbol, inverse=False):
-        for i in symbol:
-            start = my_str.find(i)
-            if inverse:
-                yield 0 - start
+        restart = 0
+        while True:
+            for i, letter in enumerate(symbol[restart:]):
+                start = my_str.find(letter)
+                if start == -1:
+                    self._check_alphabet(letter)
+                    my_str = self.alphabet
+                    restart += i
+                    break
+                elif inverse:
+                    yield 0 - start
+                else:
+                    yield start
             else:
-                yield start
-            start += len(symbol)
+                break
 
     def run(self):
+        self._check_alphabet()
         if len(self.user_word) > len(self.key_word):
             self.key_word += self.key_word[:len(self.user_word) - len(self.key_word)]
         total_index_1 = self._find_index(self.alphabet, self.user_word)
@@ -59,6 +68,21 @@ class VijenerEnc:
         for index_word, index_key in zip(total_index_1, total_index_2):
             print(self.alphabet[(index_word + index_key) % len(self.alphabet)], end='')
 
+    def _check_alphabet(self, check_letter=None):
+        if check_letter:
+            if check_letter.isalpha():
+                if check_letter not in self.alphabet:
+                    self.alphabet = alphabet_settings.ru if check_letter in alphabet_settings.ru \
+                        else alphabet_settings.eng
+                    return self.alphabet
+            else:
+                return False
+
+        if self.alphabet == 'ru':
+            self.alphabet = alphabet_settings.ru
+        else:
+            self.alphabet = alphabet_settings.eng
+
 
 # permutation = [(index_word - index_key) % len(self.alphabet)
 #               for index_word, index_key in zip(total_index_1, total_index_2)]
@@ -67,14 +91,13 @@ class VijenerEnc:
 if __name__ == "__main__":
     young_encryptor = VijenerEnc(user_word=input('Введите слово: '),
                                  key_word=input('Введите сдвиг: '),
-                                 mode='decode',
-                                 alphabet=alphabet_settings.ru)
+                                 alphabet='ru')
     young_encryptor.run()
 
 # ----------------------------------------------------------------------
 
-# TODO дан словарь из английского алфавита. Попробовать кодер Виженера
-
+# может быть словарями элегантнее?
+#
 # alphabet_ru = {
 #     'а': 0, 'б': 1, 'в': 2, 'г': 3, 'д': 4, 'е': 5,
 #     'ё': 6, 'ж': 7, 'з': 8, 'и': 9, 'й': 10, 'к': 11,

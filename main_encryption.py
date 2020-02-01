@@ -1,10 +1,12 @@
 from caesar_encryptor import CaesarEncrypt
+from vijener_encryptor import VijenerEnc
 
 import argparse
 
 if __name__ == '__main__':
     my_cipher = argparse.ArgumentParser()
 
+    my_cipher.add_argument('method_encrypt', help='Метод шифрования - цезарь/виженер')
     my_cipher.add_argument('your_word', help='Введите ваше слово')
     my_cipher.add_argument('shift', help='Введите сдвиг')
     my_cipher.add_argument('-m', '--mode', help='Режим кодирования/декодирования')
@@ -12,5 +14,11 @@ if __name__ == '__main__':
 
     args = my_cipher.parse_args()
 
-    young_encryptor = CaesarEncrypt(word=args.your_word, shift=int(args.shift), mode=args.mode, alphabet=args.alphabet)
-    young_encryptor.run()
+    if args.method_encrypt == 'цезарь':
+        young_encryptor = CaesarEncrypt(word=args.your_word, shift=int(args.shift), mode=args.mode,
+                                        alphabet=args.alphabet)
+        young_encryptor.run()
+    else:
+        young_encryptor = VijenerEnc(user_word=args.your_word, key_word=args.shift, mode=args.mode,
+                                     alphabet=args.alphabet)
+        young_encryptor.run()
