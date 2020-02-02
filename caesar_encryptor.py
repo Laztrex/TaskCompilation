@@ -44,7 +44,7 @@ class CaesarEncrypt:
         self._check_alphabet()
         if self.state == 'decode':
             self.shift = 0 - self.shift
-        self.encoder()
+        return self.encoder()
 
     def encoder(self):
         secret_word = ''
@@ -53,6 +53,7 @@ class CaesarEncrypt:
             secret_word += self._secret_permutation(letter)
 
         print(secret_word)
+        return secret_word
 
     def _check_alphabet(self, check_letter=None):
         if check_letter:
