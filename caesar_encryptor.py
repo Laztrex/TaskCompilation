@@ -36,7 +36,7 @@ class CaesarEncrypt:
 
     def __init__(self, word, shift, mode=None, alphabet=None):
         self.state = mode
-        self.alphabet = alphabet  # temporarily hard decision
+        self.alphabet = alphabet
         self.user_word = word.replace(' ', '')
         self.shift = shift
 
@@ -57,11 +57,10 @@ class CaesarEncrypt:
 
     def _check_alphabet(self, check_letter=None):
         if check_letter:
-            if check_letter.isalpha():
-                if check_letter not in self.alphabet:
-                    self.alphabet = alphabet_settings.ru if check_letter in alphabet_settings.ru \
+            if check_letter.isalpha() and check_letter not in self.alphabet:
+                self.alphabet = alphabet_settings.ru if check_letter in alphabet_settings.ru \
                         else alphabet_settings.eng
-                    return False
+                return False
             else:
                 return True
 
