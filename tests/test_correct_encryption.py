@@ -6,11 +6,11 @@ from caesar_encryptor import CaesarEncrypt
 from vijener_encryptor import VijenerEnc
 
 
-class GlobalScoreTest(unittest.TestCase):
+class GlobalCaesarTest(unittest.TestCase):
     VALUES_FOR_TEST_NORMAL = [('скиллбокс', 3, 'encode', 'ru'), ('привет', 5, 'encode', 'ru'),
                               ('а с русским текстом выйдет?', 1, 'encode', 'ru')]
     VALUES_FOR_TEST_UPPER = [('СКИЛЛБОКС', 3, 'encode', 'ru'), ('ПРИВЕТ', 5, 'encode', 'ru'),
-                             ('А С РУССКИМ ТЕКСТОМ ВЫЙДЕТ?', 1, 'encode', 'ru')]
+                             ('А С РУССКИМ ТЕКСТОМ ВЫЙДЕТ?', 1, 'encode', 'ru'), ('AVE CAESAR', 3, 'encode', 'en')]
     VALUES_FOR_TEST_UPPER_LOWER = [('СКиЛлБоКс', 3, 'encode', 'ru'), ('ПривЕТ', 5, 'encode', 'ru'),
                                    ('А с РУсСКим тЕкСТОм ВыЙдЕт?', 1, 'encode', 'ru')]
 
@@ -35,7 +35,7 @@ class GlobalScoreTest(unittest.TestCase):
 
     def test_upper(self):
         """Тест при верхнем регистре user_word"""
-        results = ['фнлоодснф', 'фхнжйч', 'бтсфттлйнуёлтупнгькеёу']
+        results = ['фнлоодснф', 'фхнжйч', 'бтсфттлйнуёлтупнгькеёу', 'dyhfdhvdu']
 
         for num, data in enumerate(self.caesar_test[1]):
             caesar_test = data.run()
