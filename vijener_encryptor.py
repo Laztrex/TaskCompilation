@@ -41,7 +41,7 @@ class VijenerEnc:
         restart = 0
         while True:
             for i, letter in enumerate(symbol[restart:]):
-                start = my_str.find(letter)
+                start = my_str.find(letter.lower())
                 if start == -1:
                     self._check_alphabet(letter)
                     my_str = self.alphabet
@@ -71,14 +71,14 @@ class VijenerEnc:
     def _check_alphabet(self, check_letter=None):
         if check_letter:
             if check_letter.isalpha():
-                if check_letter not in self.alphabet:
-                    self.alphabet = alphabet_settings.ru if check_letter in alphabet_settings.ru \
+                if check_letter.lower() not in self.alphabet:
+                    self.alphabet = alphabet_settings.ru if check_letter.lower() in alphabet_settings.ru \
                         else alphabet_settings.eng
                     return self.alphabet
             else:
                 return False
 
-        if self.alphabet == 'ru':
+        elif self.alphabet == 'ru':
             self.alphabet = alphabet_settings.ru
         else:
             self.alphabet = alphabet_settings.eng
