@@ -73,6 +73,8 @@ class CaesarEncrypt:
         for num, char in enumerate(self.alphabet):
             if char == letter:
                 return self.alphabet[(num + self.shift) % len(self.alphabet)]
+            elif letter.isnumeric():
+                return letter
             else:
                 continue
         else:
