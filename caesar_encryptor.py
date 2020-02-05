@@ -34,11 +34,11 @@ import alphabet_settings
 
 class CaesarEncrypt:
 
-    def __init__(self, word, shift, mode=None, alphabet=None):
+    def __init__(self, word, key, mode, alphabet='ru'):
         self.state = mode
         self.alphabet = alphabet
         self.user_word = word.replace(' ', '')
-        self.shift = shift
+        self.shift = int(key)
 
     def run(self):
         self._check_alphabet()
@@ -81,14 +81,6 @@ class CaesarEncrypt:
             if not self._check_alphabet(letter):
                 return self._secret_permutation(letter=letter)
             return ''
-
-
-if __name__ == "__main__":
-    young_encryptor = CaesarEncrypt(word=input('Введите слово: '),
-                                    shift=int(input('Введите сдвиг: ')),
-                                    alphabet='ru')
-    young_encryptor.run()
-
 
 # Пояснения
 # DECODER.

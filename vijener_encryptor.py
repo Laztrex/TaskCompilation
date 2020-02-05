@@ -31,9 +31,9 @@ import alphabet_settings
 
 class VijenerEnc:
 
-    def __init__(self, user_word, key_word, mode='encode', alphabet='ru'):
-        self.user_word = user_word
-        self.key_word = key_word
+    def __init__(self, word, key, mode='encode', alphabet='ru'):
+        self.user_word = word
+        self.key_word = key
         self.mode = mode
         self.alphabet = alphabet
 
@@ -87,12 +87,6 @@ class VijenerEnc:
 # permutation = [(index_word - index_key) % len(self.alphabet)
 #               for index_word, index_key in zip(total_index_1, total_index_2)]
 
-
-if __name__ == "__main__":
-    young_encryptor = VijenerEnc(user_word=input('Введите слово: '),
-                                 key_word=input('Введите сдвиг: '),
-                                 alphabet='ru')
-    young_encryptor.run()
 
 # ----------------------------------------------------------------------
 
