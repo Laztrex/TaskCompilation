@@ -4,7 +4,7 @@
 # Дан словарь русского алфавита.
 
 import alphabet_settings
-
+from time_lord import time_track
 
 # Необходимо написать программу, шифрующее слово с помощью Шифра Виженера (https://is.gd/WEVeME) и
 # (http://prntscr.com/nxuspd).
@@ -29,10 +29,11 @@ import alphabet_settings
 
 # -------------------------------------------------------------------------
 
+
 class VijenerEnc:
 
     def __init__(self, word, key, mode='encode', alphabet='ru'):
-        self.user_word = word
+        self.user_word = word.replace(' ', '')
         self.key_word = key
         self.mode = mode
         self.alphabet = alphabet
@@ -57,7 +58,7 @@ class VijenerEnc:
     def run(self):
         self._check_alphabet()
         if len(self.user_word) > len(self.key_word):
-            self.key_word += self.key_word[:len(self.user_word) - len(self.key_word)]
+            self.key_word += self.key_word * (len(self.user_word) // len(self.key_word))
         total_index_1 = self._find_index(self.alphabet, self.user_word)
 
         if self.mode == 'decode':
@@ -67,6 +68,7 @@ class VijenerEnc:
 
         for index_word, index_key in zip(total_index_1, total_index_2):
             print(self.alphabet[(index_word + index_key) % len(self.alphabet)], end='')
+        return
 
     def _check_alphabet(self, check_letter=None):
         if check_letter:
