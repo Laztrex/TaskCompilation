@@ -66,9 +66,11 @@ class VijenerEnc:
         else:
             total_index_2 = self._find_index(self.alphabet, self.key_word)
 
+        secret_word = ''
         for index_word, index_key in zip(total_index_1, total_index_2):
-            print(self.alphabet[(index_word + index_key) % len(self.alphabet)], end='')
-        return
+            secret_word += self.alphabet[(index_word + index_key) % len(self.alphabet)]
+            print(secret_word, end='')
+        return secret_word
 
     def _check_alphabet(self, check_letter=None):
         if check_letter:
