@@ -36,7 +36,8 @@ class CaesarEncrypt:
 
     def __init__(self, word, key, mode, alphabet='ru'):
         self.state = mode
-        self.alphabet = alphabet
+        self.mode_alpha = alphabet
+        self.alphabet = {}
         self.user_word = word.replace(' ', '')
         self.shift = int(key)
 
@@ -55,32 +56,33 @@ class CaesarEncrypt:
         print(secret_word)
         return secret_word
 
+    def set_alphabet(self):
+        if self.mode_alpha == 'ru':
+            self.alphabet = {i: char for i, char in enumerate(alphabet_settings.ru)}
+        else:
+            self.alphabet = {i: char for i, char in enumerate(alphabet_settings.eng)}
+
     def _check_alphabet(self, check_letter=None):
         if check_letter:
             if check_letter.isalpha() and check_letter not in self.alphabet:
-                self.alphabet = alphabet_settings.ru if check_letter in alphabet_settings.ru \
-                        else alphabet_settings.eng
+                self.mode_alpha = 'ru' if check_letter in alphabet_settings.ru \
+                        else 'eng'
+                self.set_alphabet()
                 return False
             else:
                 return True
 
-        if self.alphabet == 'ru':
-            self.alphabet = alphabet_settings.ru
-        else:
-            self.alphabet = alphabet_settings.eng
-
     def _secret_permutation(self, letter):
-        for num, char in enumerate(self.alphabet):
+        for num, char in self.alphabet.items():
             if char == letter:
                 return self.alphabet[(num + self.shift) % len(self.alphabet)]
-            elif letter.isnumeric():
-                return letter
-            else:
-                continue
         else:
-            if not self._check_alphabet(letter):
+            if letter.isnumeric():
+                return letter
+            elif not self._check_alphabet(letter):
                 return self._secret_permutation(letter=letter)
-            return ''
+            else:
+                return ''
 
 # Пояснения
 # DECODER.
