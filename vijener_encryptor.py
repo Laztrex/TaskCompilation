@@ -72,6 +72,12 @@ class VijenerEnc:
             print(secret_word, end='')
         return secret_word
 
+    def _set_alphabet(self):
+        if self.alphabet == 'ru':
+            self.alphabet = alphabet_settings.ru
+        else:
+            self.alphabet = alphabet_settings.eng
+
     def _check_alphabet(self, check_letter=None):
         if check_letter:
             if check_letter.isalpha():
@@ -82,7 +88,7 @@ class VijenerEnc:
             else:
                 return False
 
-        elif self.alphabet == 'ru':
+        if self.alphabet == 'ru':
             self.alphabet = alphabet_settings.ru
         else:
             self.alphabet = alphabet_settings.eng

@@ -77,19 +77,15 @@ class GlobalVijenerTest(unittest.TestCase):
     VALUES_FOR_TEST_UPPER = [('СКИЛЛБОКС', 'ПРИВЕТ', 'encode', 'ru'), ('ПРИВЕТ', 'СКИЛЛБОКС', 'encode', 'ru'),
                              ('КАРЛ У КЛАРЫ УКРАЛ КОРАЛЛЫ', 'КЛАРНЕТ', 'encode', 'ru'),
                              ('АННИГИЛЯЦИЯ', 'ГАРЛЕНД', 'encode', 'ru')]
-    # VALUES_FOR_TEST_UPPER_LOWER = [('СКиЛлБоКс', 3, 'encode', 'ru'), ('ПривЕТ', 5, 'encode', 'ru'),
-    #                                ('А с РУсСКим тЕкСТОм ВыЙдЕт?', 1, 'encode', 'ru'),
-    #                                ('Ave CAeSaR', 3, 'encode', 'en'),
-    #                                ('ПРАКтикУМ по МАтемаТИКЕ И ПАйТоН', 22, 'encode', 'ru'),
-    #                                ('HIdeO KOjiMA', 12, 'encode', 'en')]
-    # VALUES_FOR_TEST_MIX = [('Английский Do you speak it?', 9, 'encode'), ('50 центов is rapper', 14, 'encode'),
-    #                        ('Рунглиш, русслиш, руглиш, или русинглиш (англ. Runglish, Russlish, Ruglish, Rusinglish) '
-    #                         '— это смесь русского и английского...', 5, 'encode')]
+    VALUES_FOR_TEST_UPPER_LOWER = [('СКиЛлБоКс', 'ПрИВЕт', 'encode', 'ru'), ('ПривЕТ', 'скиллбокС', 'encode', 'ru'),
+                                   ('КАрЛ у КЛары УкрАл КОРАллЫ', 'кларНеТ', 'encode', 'ru'),
+                                   ('АННИГилЯцИя', 'Гарленд', 'encode', 'en'), ]
 
     def setUp(self):
         self.vijener_test = defaultdict(lambda: [])
         for num, name_test in enumerate([self.VALUES_FOR_TEST_NORMAL,
-                                         self.VALUES_FOR_TEST_UPPER, ]):
+                                         self.VALUES_FOR_TEST_UPPER,
+                                         self.VALUES_FOR_TEST_UPPER_LOWER, ]):
             self.vijener_test[num] = [VijenerEnc(*data) for data in name_test]
         cprint(f'Вызван {self.shortDescription()}', flush=True, color='cyan')
 
@@ -109,6 +105,14 @@ class GlobalVijenerTest(unittest.TestCase):
         results = ['быснруюыъ', 'быснру', 'хлрьбпюкьыдшхтццобнрюё', 'гнюфзцпвцщк']
 
         for num, data in enumerate(self.vijener_test[1]):
+            vijener_test = data.run()
+            self.assertEqual(vijener_test, results[num])
+
+    def test_upper_lower(self):
+        """Тест при смешанном регистре user_word"""
+        results = ['быснруюыъ', 'быснру', 'хлрьбпюкьыдшхтццобнрюё', 'гнюфзцпвцщк']
+
+        for num, data in enumerate(self.vijener_test[2]):
             vijener_test = data.run()
             self.assertEqual(vijener_test, results[num])
 
