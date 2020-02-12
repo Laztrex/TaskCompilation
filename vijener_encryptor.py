@@ -4,6 +4,7 @@
 # Дан словарь русского алфавита.
 
 import alphabet_settings
+from string import punctuation
 from time_lord import time_track
 
 # Необходимо написать программу, шифрующее слово с помощью Шифра Виженера (https://is.gd/WEVeME) и
@@ -23,7 +24,7 @@ from time_lord import time_track
 # Пусть дан ключ 'скиллбокс'.
 # Каждая буква в словаре букв алфавита является ключом к позиционном номеру этой буквы в алфавите.
 # Суммируем позиции букв введенного слова и ключа по модулю N, где N - количество букв в алфавите:
-# п + с = 16 + 18 = 34 mod 32 = 2 (буква 'п')
+# п + с = 16 + 18 = 34 mod 32 = 2 (буква 'б')
 # р + к = 17 + 11 = 28 mod 32 = 28 (буква 'ъ')
 # и т.д.
 
@@ -37,6 +38,11 @@ class VijenerEnc:
         self.key_word = key
         self.mode = mode
         self.alphabet = alphabet
+        self.alphabet_dict = {}
+        tt = str.maketrans(dict.fromkeys(punctuation))
+        self.word_list = list(self.user_word.translate(tt))
+        self.key_list = list(key)
+        self.a = []
 
     def _find_index(self, my_str, symbol, inverse=False):
         restart = 0
@@ -93,29 +99,32 @@ class VijenerEnc:
         else:
             self.alphabet = alphabet_settings.eng
 
+    def modern_run(self):
+        if len(self.word_list) > len(self.key_list):
+            self.key_list += self.key_list * (len(self.user_word) // len(self.key_word))
+        if self.alphabet == 'ru':
+            self.alphabet = alphabet_settings.ru
+            self.alphabet_dict = {i: ord(i) for i in alphabet_settings.ru}
+        else:
+            self.alphabet_dict = {i: ord(i) for i in alphabet_settings.ru}
 
+        for i, j in zip(self.word_list, self.key_list):
+            i_repr = ord(i)
+            j_repr = ord(j)
+            self.a += [(i_repr + j_repr) - 1072]
+
+        print(self.word_list)
+        print(self.key_list)
+        print(self.a)
+        for letter in self.a:
+            if letter > 1103:
+                letter = letter - 32
+
+            print(chr(letter), end='')
+
+
+if __name__ == '__main__':
+    analyze = VijenerEnc(word='здравствуйте, как ваши дела', key='скиллбокс')
+    analyze.modern_run()
 # permutation = [(index_word - index_key) % len(self.alphabet)
 #               for index_word, index_key in zip(total_index_1, total_index_2)]
-
-
-# ----------------------------------------------------------------------
-
-# может быть словарями элегантнее?
-#
-# alphabet_ru = {
-#     'а': 0, 'б': 1, 'в': 2, 'г': 3, 'д': 4, 'е': 5,
-#     'ё': 6, 'ж': 7, 'з': 8, 'и': 9, 'й': 10, 'к': 11,
-#     'л': 12, 'м': 13, 'н': 14, 'о': 15, 'п': 16, 'р': 17,
-#     'с': 18, 'т': 19, 'у': 20, 'ф': 21, 'х': 22, 'ц': 23,
-#     'ч': 24, 'ш': 25, 'щ': 26, 'ь': 27, 'ъ': 28, 'э': 29,
-#     'ю': 30, 'я': 31,
-# }
-
-
-# alphabet_eng = {
-#     'a': 0,  'b': 1,  'c': 2,  'd': 3,  'e': 4,  'f': 5,
-#     'g': 6,  'h': 7,  'i': 8,  'j': 9,  'k': 10, 'l': 11,
-#     'm': 12, 'n': 13, 'o': 14, 'p': 15, 'q': 16, 'r': 17,
-#     's': 18, 't': 19, 'u': 20, 'v': 21, 'w': 22, 'x': 23,
-#     'y': 24, 'z': 25,
-# }
