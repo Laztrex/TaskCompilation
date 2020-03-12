@@ -5,7 +5,6 @@
 
 import alphabet_settings
 from string import punctuation
-from time_lord import time_track
 
 # Необходимо написать программу, шифрующее слово с помощью Шифра Виженера (https://is.gd/WEVeME) и
 # (http://prntscr.com/nxuspd).
@@ -75,7 +74,7 @@ class VijenerEnc:
         secret_word = ''
         for index_word, index_key in zip(total_index_1, total_index_2):
             secret_word += self.alphabet[(index_word + index_key) % len(self.alphabet)]
-            print(secret_word, end='')
+            # print(secret_word, end='')
         return secret_word
 
     def _set_alphabet(self):
@@ -124,7 +123,7 @@ class VijenerEnc:
 
 
 if __name__ == '__main__':
-    analyze = VijenerEnc(word='здравствуйте, как ваши дела', key='скиллбокс')
-    analyze.modern_run()
+    analyze = VijenerEnc(word='ё', key='скиллбокс')
+    print(analyze.run())
 # permutation = [(index_word - index_key) % len(self.alphabet)
 #               for index_word, index_key in zip(total_index_1, total_index_2)]
