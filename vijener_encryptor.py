@@ -33,19 +33,16 @@ from string import punctuation
 
 class VijenerEnc:
 
-    def __init__(self, word, key, mode='encode', alphabet='ru'):
-        self.user_word = word.replace(' ', '')
+    def __init__(self, word, key, mode='encode', alphabet='ru', sign=None):
+        word = word.replace(' ', '')
         self.key_word = key
         self.mode = mode
         self.alphabet = alphabet
         self.alphabet_dict = {}
-        a = dict.fromkeys(punctuation)
-        b = re.finditer(f'[{punctuation}]', self.user_word)
-        for i in b:
-            a[i.group()] = i.span()[0]
-        self.dict_punc = {key: value for key, value in a.items() if value}
+        self.dict_punc = {b.group(): b.span()[0] for b in re.finditer(f'[{punctuation}]', word) if b.group()
+                          in punctuation} if sign else None
         tt = str.maketrans(dict.fromkeys(punctuation))
-        self.word_list = self.user_word.translate(tt)
+        self.word_list = word.translate(tt)
         self.key_list = list(key)
         self.a = []
 
@@ -69,7 +66,7 @@ class VijenerEnc:
     def run(self):
         self._check_alphabet()
         if len(self.word_list) > len(self.key_word):
-            self.key_word += self.key_word * (len(self.user_word) // len(self.key_word))
+            self.key_word += self.key_word * (len(self.word_list) // len(self.key_word))
         total_index_1 = self._find_index(self.alphabet, self.word_list)
 
         if self.mode == 'decode':
@@ -106,36 +103,9 @@ class VijenerEnc:
         else:
             self.alphabet = alphabet_settings.eng
 
-    def modern_run(self):
-        if len(self.word_list) > len(self.key_list):
-            self.key_list += self.key_list * (len(self.user_word) // len(self.key_word))
-        if self.alphabet == 'ru':
-            self.alphabet = alphabet_settings.ru
-            self.alphabet_dict = {i: ord(i) for i in alphabet_settings.ru}
-        else:
-            self.alphabet_dict = {i: ord(i) for i in alphabet_settings.ru}
-
-        for i, j in zip(self.word_list, self.key_list):
-            i_repr = ord(i)
-            j_repr = ord(j)
-            self.a += [(i_repr + j_repr) - 1072]
-
-        print(self.word_list)
-        print(self.key_list)
-        print(self.a)
-        secret_word = ''
-        for letter in self.a:
-            if letter > 1103:
-                letter = letter - 32
-            secret_word += chr(letter)
-            # print(chr(letter), end='')
-        for sign, idx in self.dict_punc.items():
-            secret_word = secret_word[0:idx] + sign + secret_word[idx - 1:]
-        return secret_word
-
 
 if __name__ == '__main__':
-    analyze = VijenerEnc(word='скилл-бокс', key='привет')
+    analyze = VijenerEnc(word='скилл- бокс', key='привет', sign=True)
     print(analyze.run())
 # permutation = [(index_word - index_key) % len(self.alphabet)
 #               for index_word, index_key in zip(total_index_1, total_index_2)]
