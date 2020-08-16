@@ -31,7 +31,7 @@ if __name__ == '__main__':
     my_cipher.add_argument('method_encrypt', help='Метод шифрования - цезарь/виженер')
     my_cipher.add_argument('word', help='Введите ваше слово')
     my_cipher.add_argument('key', help='Введите ключ')
-    my_cipher.add_argument('-m', '--mode', help='Режим кодирования/декодирования', default='encode')
+    my_cipher.add_argument('-m', '--mode', help='Режим enc/dec', default='enc')
     my_cipher.add_argument('-a', '--alphabet', help='Используемый алфавит', default='ru')
 
     args = my_cipher.parse_args()
