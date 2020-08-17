@@ -43,7 +43,6 @@ class CaesarEncrypt:
         for letter in self.user_word.lower():
             secret_word += self._secret_permutation(letter)
 
-        print(secret_word)
         return secret_word
 
     def set_alphabet(self):

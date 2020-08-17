@@ -1,7 +1,7 @@
 import unittest
-from unittest.mock import Mock
-from termcolor import cprint
 from collections import defaultdict
+from termcolor import cprint
+from unittest.mock import patch, call
 from caesar_encryptor import CaesarEncrypt
 from vijener_encryptor import VijenerEnc
 
@@ -34,7 +34,8 @@ class GlobalCaesarTest(unittest.TestCase):
     def tearDown(self):
         cprint(f'Результаты будут прологированы, но потом :)')
 
-    def test_normal(self):
+    @patch('builtins.print', return_value=None)
+    def test_normal(self, mocked_print):
         """Тест при нормальных условиях"""
         results = ['фнлоодснф', 'фхнжйч', 'бтсфттлйнуёлтупнгькеёу']
 
@@ -42,7 +43,8 @@ class GlobalCaesarTest(unittest.TestCase):
             caesar_test = data.run()
             self.assertEqual(caesar_test, results[num])
 
-    def test_upper(self):
+    @patch('builtins.print', return_value=None)
+    def test_upper(self, mocked_print):
         """Тест при верхнем регистре user_word"""
         results = ['фнлоодснф', 'фхнжйч', 'бтсфттлйнуёлтупнгькеёу', 'dyhfdhvdu',
                    'еёхазюаиведвхзъвхзюаъюехяздг', 'tupqawavuym']
@@ -51,7 +53,8 @@ class GlobalCaesarTest(unittest.TestCase):
             caesar_test = data.run()
             self.assertEqual(caesar_test, results[num])
 
-    def test_upper_lower(self):
+    @patch('builtins.print', return_value=None)
+    def test_upper_lower(self, mocked_print):
         """Тест при смешанном регистре user_word"""
         results = ['фнлоодснф', 'фхнжйч', 'бтсфттлйнуёлтупнгькеёу', 'dyhfdhvdu',
                    'еёхазюаиведвхзъвхзюаъюехяздг', 'tupqawavuym']
@@ -60,7 +63,8 @@ class GlobalCaesarTest(unittest.TestCase):
             caesar_test = data.run()
             self.assertEqual(caesar_test, results[num])
 
-    def test_mix(self):
+    @patch('builtins.print', return_value=None)
+    def test_mix(self, mocked_print):
         """Тест при смешанном алфавите"""
         results = ['ицлфстъустmxhxdbynjtrc', '50дтыаьпwgfoddsf',
                    'хштзрнэхшццрнэхшзрнэнрнхшцнтзрнэетзрwzslqnxmwzxxqnxmwzlqnxmwzxnslqnxmвчуцсйцбхшццпузунетзрноцпузу']
@@ -92,7 +96,8 @@ class GlobalVijenerTest(unittest.TestCase):
     def tearDown(self):
         cprint(f'Результаты будут прологированы, но потом :)')
 
-    def test_normal(self):
+    @patch('builtins.print', return_value=None)
+    def test_normal(self, mocked_print):
         """Тест при нормальных условиях"""
         results = ['быснруюыъ', 'быснру', 'хлрьбпюкьыдшхтццобнрюё', 'гнюфзцпвцщк']
 
@@ -100,7 +105,8 @@ class GlobalVijenerTest(unittest.TestCase):
             vijener_test = data.run()
             self.assertEqual(vijener_test, results[num])
 
-    def test_upper(self):
+    @patch('builtins.print', return_value=None)
+    def test_upper(self, mocked_print):
         """Тест при верхнем регистре user_word"""
         results = ['быснруюыъ', 'быснру', 'хлрьбпюкьыдшхтццобнрюё', 'гнюфзцпвцщк']
 
@@ -108,7 +114,8 @@ class GlobalVijenerTest(unittest.TestCase):
             vijener_test = data.run()
             self.assertEqual(vijener_test, results[num])
 
-    def test_upper_lower(self):
+    @patch('builtins.print', return_value=None)
+    def test_upper_lower(self, mocked_print):
         """Тест при смешанном регистре user_word"""
         results = ['быснруюыъ', 'быснру', 'хлрьбпюкьыдшхтццобнрюё', 'гнюфзцпвцщк']
 

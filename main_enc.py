@@ -15,10 +15,10 @@ class NotMethodEncError(Exception):
 def main(method, **kwargs):
     if method == 'цезарь':
         young_encryptor = CaesarEncrypt(**kwargs)
-        young_encryptor.run()
+        print(young_encryptor.run())
     elif method == 'виженер':
         young_encryptor = VijenerEnc(**kwargs)
-        young_encryptor.run()
+        print(young_encryptor.run())
     else:
         raise NotMethodEncError
 
