@@ -10,21 +10,21 @@ Plan: a collection of different tasks for encrypting / constructing artificial l
 Example:  
 - Encoding
 ~~~
-Слово:         скиллбокс  
+Слово:         гитхаб  
 Число сдвигов: 3  
-Вывод:         фнлоодснф
+Вывод:         ёлхшгд
 ~~~
 ~~~
-main_enc.py цезарь скиллбокс 3 [-m enc -a ru]
+main_enc.py цезарь гитхаб 3 [-m enc -a ru]
 ~~~
 - decoding
 ~~~
-Слово:         фнлоодснф  
+Слово:         ёлхшгд  
 Число сдвигов: 3  
-Вывод:         скиллбокс
+Вывод:         гитхаб
 ~~~
 ~~~
-main_enc.py цезарь скиллбокс 3 -m dec [-a ru]
+main_enc.py цезарь ёлхшгд 3 -m dec [-a ru]
 ~~~
 
 ## Vijener Encryptor
@@ -34,19 +34,19 @@ main_enc.py цезарь скиллбокс 3 -m dec [-a ru]
 Example:  
 - Encoding
 ~~~
-Слово:         скиллбокс  
+Слово:         гитхаб  
 Слово-ключ:    привет  
-Вывод:         быснруюыъ
+Вывод:         тщычеу
 ~~~
 ~~~
-main_enc.py виженер скиллбокс привет [-m enc -a ru]
+main_enc.py виженер гитхаб привет [-m enc -a ru]
 ~~~
 - decoding
 ~~~
-Слово:         быснруюыъ  
+Слово:         тщычеу  
 Число сдвигов: привет  
-Вывод:         скиллбокс
+Вывод:         гитхаб
 ~~~
 ~~~
-main_enc.py виженер быснруюыъ привет -m dec [-a ru]
+main_enc.py виженер тщычеу привет -m dec [-a ru]
 ~~~
