@@ -32,8 +32,9 @@ if __name__ == '__main__':
     my_cipher.add_argument('word', help='Введите ваше слово')
     my_cipher.add_argument('key', help='Введите ключ')
     my_cipher.add_argument('-m', '--mode', help='Режим enc/dec', default='enc')
+    my_cipher.add_argument('-j', '--jeff', help='шифр Джефферсона', type=int)
     my_cipher.add_argument('-a', '--alphabet', help='Используемый алфавит', default='ru')
 
     args = my_cipher.parse_args()
-    main(method=args.method_encrypt, word=args.word, key=args.key, mode=args.mode, alphabet=args.alphabet)
+    main(method=args.method_encrypt, word=args.word, key=args.key, mode=args.mode, jeff=args.jeff, alphabet=args.alphabet)
 
