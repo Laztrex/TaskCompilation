@@ -24,7 +24,7 @@ import alphabet_settings
 
 class CaesarEncrypt:
 
-    def __init__(self, word, key, mode, jeff=None, alphabet='ru'):
+    def __init__(self, word, key, mode, alphabet='ru', jeff=None):
         self.state = mode
         self.mode_alpha = alphabet
         self.alphabet = {}
@@ -49,8 +49,8 @@ class CaesarEncrypt:
         secret_word = ''
 
         for letter in self.user_word.lower():
-            if letter.isalpha():
-                secret_word += self._secret_permutation(letter)
+            # if letter.isalpha():
+            secret_word += self._secret_permutation(letter)
 
         return secret_word
 
@@ -69,7 +69,7 @@ class CaesarEncrypt:
         if check_letter:
             if check_letter.isalpha() and check_letter not in self.alphabet:
                 self.mode_alpha = 'ru' if check_letter in alphabet_settings.ru \
-                        else 'eng'
+                    else 'eng'
                 self.set_alphabet()
                 return False
             else:
@@ -83,8 +83,8 @@ class CaesarEncrypt:
         else:
             if letter.isnumeric():
                 return letter
-            # elif not self._check_alphabet(letter):
-            #     return self._secret_permutation(letter=letter)
+            elif not self._check_alphabet(letter):
+                return self._secret_permutation(letter=letter)
             else:
                 return ''
 
