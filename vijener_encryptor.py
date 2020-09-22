@@ -92,8 +92,5 @@ class VijenerEnc:
             else:
                 return False
 
-        if self.alphabet == 'ru':
-            self.alphabet = alphabet_settings.ru
-        else:
-            self.alphabet = alphabet_settings.eng
+        self._set_alphabet()
 
