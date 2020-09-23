@@ -49,14 +49,13 @@ class CaesarEncrypt:
         secret_word = ''
 
         for letter in self.user_word.lower():
-            # if letter.isalpha():
             secret_word += self._secret_permutation(letter)
 
         return secret_word
 
     def set_alphabet(self, user_alphabet=None):
         if user_alphabet:
-            return {i: char for i, char in
+            return {i: char.lower() for i, char in
                     enumerate(user_alphabet)}
         if self.mode_alpha == 'ru':
             self.alphabet = {i: char for i, char in
@@ -77,9 +76,8 @@ class CaesarEncrypt:
 
     def _secret_permutation(self, letter):
         for num, char in self.alphabet.items():
-            if char == letter:
+            if char in letter:
                 return self.alphabet[(num + self.shift) % len(self.alphabet)]
-            # return ''
         else:
             if letter.isnumeric():
                 return letter
