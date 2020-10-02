@@ -23,18 +23,20 @@ class EnigmaEngine:
         self.rotors = rotors
         self.reflector_type = reflector
 
-        self.rvs = False
+        self.reverse = False
 
     def _forward_pass(self, symbol_in_work, rots_fwd, rots_back):
+        self.reverse = False
         while rots_fwd:
             rot = rots_fwd.pop()
             rots_back.append(rot)
-            symbol_in_work = self.rotor_move(symbol_in_work, rot, self.rvs)
+            symbol_in_work = self.rotor_move(symbol_in_work, rot)
         return self.reflector(symbol_in_work, self.reflector_type)
 
     def _backward_pass(self, symbol_in_work, rots_back):
+        self.reverse = True
         while rots_back:
-            symbol_in_work = self.rotor_move(symbol_in_work, rots_back.pop(), self.rvs)
+            symbol_in_work = self.rotor_move(symbol_in_work, rots_back.pop())
         return symbol_in_work
 
     def enigma_start(self, symbol):
@@ -44,12 +46,7 @@ class EnigmaEngine:
                     (self.rotors[2], self.shifts[2])]
         rots_back = []
 
-        self.rvs = False
-
         symbol_in_work = self._forward_pass(symbol, rots_fwd, rots_back)
-
-        self.rvs = True
-
         symbol_in_work = self._backward_pass(symbol_in_work, rots_back)
 
         self.move_disks()
@@ -57,11 +54,9 @@ class EnigmaEngine:
         return symbol_in_work
 
     def move_disks(self):
-        for idx, (rot, val) in enumerate(zip(self.rotors, self.shifts)):
+        for idx, (rot, val) in enumerate(zip(self.rotors[1:], self.shifts[1:]), start=1):
             if val == 26:
                 self.shifts[idx] = 0
-            if idx == 0:
-                continue
             if self._STEPS[rot] == val + 1:
                 self.shifts[idx - 1] += 1
                 if idx == 1:
@@ -73,7 +68,7 @@ class EnigmaEngine:
         except ValueError as e:
             return e
 
-    def rotor_move(self, symbol, n, reverse=False):
+    def rotor_move(self, symbol, n):
         if not n[0]:
             return symbol
         symbol = self.caesar(symbol, key=n[1])
@@ -81,7 +76,7 @@ class EnigmaEngine:
             if symbol in alphabet:
                 index = alphabet.find(symbol)
                 if index > -1:
-                    dd = alphabet[(index + (1, -1)[reverse]) % len(alphabet)]
+                    dd = alphabet[(index + (1, -1)[self.reverse]) % len(alphabet)]
                     return self.caesar(dd, key=n[1] * -1)
         return ''
 
@@ -99,5 +94,5 @@ class EnigmaEngine:
 
 
 if __name__ == '__main__':
-    enigma = EnigmaEngine(1, [2, 2, 2], [3, 3, 3])
-    print(enigma.run_encode(text='AAAAA AAAAA AAAAA AAAAA AAAAA AAAAA AAAAA AAAAA AAAAA AAAAA AAAAA'))
+    enigma = EnigmaEngine(1, [1, 2, 1], [0, 0, 0])
+    print(enigma.run_encode(text='AAAAA AAAAA'))
