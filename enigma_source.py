@@ -2,28 +2,37 @@ from string import ascii_uppercase
 
 
 class EnigmaEngine:
-
     _ALPHABET = ascii_uppercase
     _B_REFLECTOR = ['AY', 'BR', 'CU', 'DH', 'EQ', 'FS', 'GL', 'IP', 'JX', 'KN', 'MO', 'TZ', 'VW']
     _RDICT = {1: ('AELTPHQXRU', 'BKNW', 'CMOY', 'DFG', 'IV', 'JZ', 'S'),
-             2: ('FIXVYOMW', 'CDKLHUP', 'ESZ', 'BJ', 'GR', 'NT', 'A', 'Q'),
-             3: ('ABDHPEJT', 'CFLVMZOYQIRWUKXSG', 'N'),
-             4: ('AEPLIYWCOXMRFZBSTGJQNH', 'DV', 'KU'),
-             5: ('AVOLDRWFIUQ', 'BZKSMNHYC', 'EGTJPX'),
-             6: ('AJQDVLEOZWIYTS', 'CGMNHFUX', 'BPRK'),
-             7: ('ANOUPFRIMBZTLWKSVEGCJYDHXQ'),
-             8: ('AFLSETWUNDHOZVICQ', 'BKJ', 'GXY', 'MPR'),
-             'beta': ('ALBEVFCYODJWUGNMQTZSKPR', 'HIX'),
-             'gamma': ('AFNIRLBSQWVXGUZDKMTPCOYJHE'),
-             }
+              2: ('FIXVYOMW', 'CDKLHUP', 'ESZ', 'BJ', 'GR', 'NT', 'A', 'Q'),
+              3: ('ABDHPEJT', 'CFLVMZOYQIRWUKXSG', 'N'),
+              4: ('AEPLIYWCOXMRFZBSTGJQNH', 'DV', 'KU'),
+              5: ('AVOLDRWFIUQ', 'BZKSMNHYC', 'EGTJPX'),
+              6: ('AJQDVLEOZWIYTS', 'CGMNHFUX', 'BPRK'),
+              7: ('ANOUPFRIMBZTLWKSVEGCJYDHXQ'),
+              8: ('AFLSETWUNDHOZVICQ', 'BKJ', 'GXY', 'MPR'),
+              'beta': ('ALBEVFCYODJWUGNMQTZSKPR', 'HIX'),
+              'gamma': ('AFNIRLBSQWVXGUZDKMTPCOYJHE'),
+              }
     _STEPS = {1: 17, 2: 5, 3: 22, 4: 10, 5: 0}
 
-    def __init__(self, reflector, rotors, shifts):
-        self.shifts = shifts  # [shift1, shift2, shift3]
+    def __init__(self, reflector, rotors, shifts, pairs=''):
+        self.shifts = shifts
         self.rotors = rotors
         self.reflector_type = reflector
 
+        self.pairs = pairs.upper().split()
+
         self.reverse = False
+
+    def _check_pairs(self, symbol):
+        pair = list(filter(lambda p: symbol in p, self.pairs))
+        if len(pair) > 1:
+            raise ValueError('Извините, невозможно произвести коммутацию')
+        if pair:
+            return pair[0][(pair[0].index(symbol) + 1) % 2]
+        return symbol
 
     def _forward_pass(self, symbol_in_work, rots_fwd, rots_back):
         self.reverse = False
@@ -45,10 +54,15 @@ class EnigmaEngine:
         rots_fwd = [(self.rotors[0], self.shifts[0]), (self.rotors[1], self.shifts[1]),
                     (self.rotors[2], self.shifts[2])]
         rots_back = []
-
+        answer = self._check_pairs(symbol)
+        if answer:
+            symbol = answer
         symbol_in_work = self._forward_pass(symbol, rots_fwd, rots_back)
         symbol_in_work = self._backward_pass(symbol_in_work, rots_back)
 
+        answer = self._check_pairs(symbol_in_work)
+        if answer:
+            symbol_in_work = answer
         self.move_disks()
 
         return symbol_in_work
@@ -94,5 +108,5 @@ class EnigmaEngine:
 
 
 if __name__ == '__main__':
-    enigma = EnigmaEngine(1, [1, 2, 1], [0, 0, 0])
-    print(enigma.run_encode(text='AAAAA AAAAA'))
+    enigma = EnigmaEngine(1, [1, 2, 3], [0, 0, 0], pairs='AC')
+    print(enigma.run_encode(text='a'))
